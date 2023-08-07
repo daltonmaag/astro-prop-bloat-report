@@ -1,15 +1,37 @@
 ---
+import PropsBloatReport from "../components/PropsBloatReport.vue";
+
+function makeNestedData(nesting: number, letter = "a"): any {
+  if (nesting == 0) return "leaf";
+  return {
+    [letter]: [
+      makeNestedData(
+        nesting - 1,
+        String.fromCodePoint(letter.codePointAt(0)! + 1)
+      ),
+    ],
+  };
+}
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro</title>
+  </head>
+  <body>
+    <h1>Astro Prop Serialization Bloat Report</h1>
+    {
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((nesting) => (
+        <PropsBloatReport
+          nesting={nesting}
+          data={makeNestedData(nesting)}
+          client:load
+        />
+      ))
+    }
+  </body>
 </html>
